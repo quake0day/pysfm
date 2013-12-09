@@ -4,7 +4,7 @@ import random
 
 wtl = MPI.Wtime()
 comm = MPI.COMM_WORLD
-rand = comm.Get_rank()
+rank = comm.Get_rank()
 mpisize = comm.Get_size()
 nsamples = int(12e6/mpisize)
 
