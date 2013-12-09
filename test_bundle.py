@@ -249,6 +249,7 @@ def report_bundle(bundle, name):
 def test_optimize_fast():
     b_true, b_init = create_test_problem(noise=0)
 
+
     ba = BundleAdjuster(b_init)
     ba.optimize(max_steps=50)
 
