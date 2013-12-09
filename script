@@ -48,7 +48,7 @@ echo $SLURM_NODEFILE
 
 echo "Start....."
 python test_bundle.py > ./out/res.out
-python test_mpi.py> ./out/res_mpi.out
+python mpi_test.py> ./out/res_mpi.out
 echo "Done....."
 
 #echo "Launch homework1 with mpiexec"
