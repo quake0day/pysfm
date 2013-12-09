@@ -53,6 +53,8 @@ python test_bundle.py > ./out/res.out
 python mpi_test.py> ./out/res_mpi.out
 mpdtrace
 mpiexec -np 5 python mpi_hello.py > ./out/res_hello.out
+mpiexec -np 5 python matrix_dotp.py > ./out/res_matrix_dotp.out
+
 echo "Done....."
 
 #echo "Launch homework1 with mpiexec"
