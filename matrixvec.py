@@ -2,11 +2,19 @@ from mpi4py import MPI
 import numpy
 import numpy as np
 
+
+def pprint(string, comm=MPI.COMM_WORLD):
+    if comm.rank == 0:
+        print(string)
+
+
 comm = MPI.COMM_WORLD
 size = comm.Get_size
 rank = comm.Get_rank
-print size
-print rank
+
+
+pprint(size)
+pprint(rank)
 
 def matvec(comm, A, x):
     m = A.shape[0] # local rows
@@ -20,4 +28,5 @@ def matvec(comm, A, x):
 A = np.array([[ 2.  ,  0.  , -0.5 ],[ 0.05,  3.  ,  0.1 ],[ 0.  ,  0.  ,  1.  ]])
 x = np.array([ 0.0782,  0.0345,  0.3304])
 y = matvec(comm, A, x)
-print y
+pprint("The result is...")
+pprint(y)
