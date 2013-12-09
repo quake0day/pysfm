@@ -77,10 +77,14 @@ if __name__ == "__main__":
     t_total = time()-t0
 
     t0 = time()
-    np.dot(tile_A, tile_B)
+    aa = np.dot(tile_A, tile_B)
     t_serial = time()-t0
 
     pprint(78*"=")
+    pprint("Final res parallel: ")
+    pprint(my_C)
+    pprint("Final res serial: ")
+    pprint(aa)
     pprint("Computed (serial) %d x %d x %d in  %6.2f seconds" % (my_M, my_M, my_N, t_serial))
     pprint(" ... expecting parallel computation to take %6.2f seconds" % (mpi_rows*mpi_rows*mpi_cols*t_serial / comm.size))
     pprint("Computed (parallel) %d x %d x %d in        %6.2f seconds" % (mpi_rows*my_M, mpi_rows*my_M, mpi_cols*my_N, t_total))
