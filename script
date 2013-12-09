@@ -1,0 +1,63 @@
+#!/bin/sh
+##SBATCH --partition=debug
+#SBATCH --time=12:15:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+##SBATCH --mem=25600
+##SBATCH --constraint=CPU-E7-4830
+#SBATCH --job-name="pysfm"
+##SBATCH --output=new_inter_giga_pingpong.out
+#SBATCH --mail-user=schen23@buffalo.edu
+#SBATCH --mail-type=ALL
+##SBATCH --requeue
+#Specifies that the job will be requeued after a node failure.
+#The default is that the job will not be requeued.
+
+
+export | grep SLURM
+echo "SLURM_JOBID="$SLURM_JOBID
+echo "SLURM_JOB_NODELIST"=$SLURM_JOB_NODELIST
+echo "SLURM_NNODES"=$SLURM_NNODES
+echo "SLURMTMPDIR="$SLURMTMPDIR
+
+echo "working directory = "$SLURM_SUBMIT_DIR
+
+module load intel
+module load intel-mpi/4.1.0
+module load python/2.7.2
+module load mpi4py/1.3
+module list
+ulimit -s unlimited
+#
+#export I_MPI_DEBUG=4
+#export I_MPI_FABRICS="ssm:tcp" # tcp/ip between nodes
+#NPROCS=`srun --nodes=${SLURM_NNODES} bash -c 'hostname' |wc -l`
+#echo "NPROCS="$NPROCS
+echo "Launch homework1 with mpiexec"
+#export I_MPI_PMI_LIBRARY=/usr/lib64/libpmi.so
+#srun lstopo --of pdf > k.pdf
+#srun ./generate.sh
+SLURM_NODEFILE=my_slurm_nodes.$$
+echo $SLURM_NODEFILE
+srun hostname | sort > $SLURM_NODEFILE
+echo $SLURM_NODEFILE
+#mpdboot -n 1 -f $SLURM_NODEFILE -v -r /usr/bin/ssh
+mpdboot -n $SLURM_NNODES -f $SLURM_NODEFILE -v -r /usr/bin/ssh
+echo $SLURM_NNODES
+echo $SLURM_NODEFILE
+
+echo "Start....."
+python test_bundle.py >out.out
+echo "Done....."
+
+#echo "Launch homework1 with mpiexec"
+#mpdtrace
+#mpiexec -np 8 ./a  > res_8
+#mpiexec -np 16 ./a  > res_16
+#mpiexec -np 32 ./a  > res_32
+#mpiexec -np 64 ./a  > res_64
+#mpiexec -np 128 ./a  > res_128
+#mpdallexit
+
+#
+echo "All Done!"

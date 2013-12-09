@@ -1,5 +1,7 @@
 import numpy as np
 from numpy import *
+import matplotlib
+matplotlib.use('Agg') # Let it be able to run without XDisplay
 from matplotlib.pyplot import *
 from matplotlib.backends.backend_pdf import PdfPages
 
