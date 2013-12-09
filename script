@@ -1,10 +1,10 @@
 #!/bin/sh
 ##SBATCH --partition=debug
-#SBATCH --partition=gpu
-#SBATCH --gres=gpu:2
+##SBATCH --partition=gpu
+##SBATCH --gres=gpu:2
 #SBATCH --time=12:15:00
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-node=8
 ##SBATCH --mem=25600
 ##SBATCH --constraint=CPU-E7-4830
 #SBATCH --job-name="pysfm"
@@ -52,8 +52,8 @@ echo "Start....."
 python test_bundle.py > ./out/res.out
 python mpi_test.py> ./out/res_mpi.out
 mpdtrace
-mpiexec -np 5 python mpi_hello.py > ./out/res_hello.out
-mpiexec -np 5 python matrix_dotp.py > ./out/res_matrix_dotp.out
+mpiexec -np 8 python mpi_hello.py > ./out/res_hello.out
+mpiexec -np 8 python matrix_dotp.py > ./out/res_matrix_dotp.out
 
 echo "Done....."
 
