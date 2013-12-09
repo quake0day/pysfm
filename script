@@ -47,7 +47,7 @@ echo $SLURM_NNODES
 echo $SLURM_NODEFILE
 
 echo "Start....."
-python test_bundle.py >out.out
+python test_bundle.py > ./out/res.out
 echo "Done....."
 
 #echo "Launch homework1 with mpiexec"
