@@ -54,6 +54,7 @@ python mpi_test.py> ./out/res_mpi.out
 mpdtrace
 mpiexec -np 8 python mpi_hello.py > ./out/res_hello.out
 mpiexec -np 8 python matrix_dotp.py > ./out/res_matrix_dotp.out
+mpiexec -np 8 python matrixvec.py > ./out/res_matrix_vec.out
 
 echo "Done....."
 
