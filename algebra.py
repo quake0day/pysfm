@@ -41,6 +41,11 @@ def prdot(H, X):
 # Multiple an arbitrary number of matrices with np.dot.
 # Surely there is a way in numpy to do this conveniently but I haven't found it
 def dots(*m):
+    print "DOTS being called"
+    print m
+    print "----"
+    print reduce(np.dot,m)
+    print "----"
     return reduce(np.dot, m)
 
 # Compute the sum of squared elements
