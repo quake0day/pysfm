@@ -71,8 +71,13 @@ def dot_p(my_A,my_B,comm=MPI.COMM_WORLD):
     return my_C
 
 if __name__ == "__main__":
-    my_A = np.array([    0., -1500.,   271.])
-    my_B = np.array([-5.0873  , -0.17702 ,  2.968417])
+    my_A = np.array([[  2.6321, -14.6372],
+       [  7.578 ,   2.8283],
+       [  3.7932,  -0.5524],
+       [ 44.2092,   1.1052],
+       [  0.    ,  66.3138],
+       [-15.5327,  35.324 ]])
+    my_B = np.array([ 1.8031, -2.3002])
     my_C = dots_p(my_A, my_B)  
     pprint(my_C)
     """
