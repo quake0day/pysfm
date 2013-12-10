@@ -85,7 +85,7 @@ if __name__ == "__main__":
        [  0.    ,  66.3138],
        [-15.5327,  35.324 ]])
     my_B = np.array([ 1.8031, -2.3002])
-    #my_C = dots_p(my_A, my_B)  
+    my_C = dots_p(my_A, my_B)  
 
     pprint(my_C)
     """
