@@ -31,6 +31,9 @@ def dots_p(*m):
     else:
         return reduce(dot_p, m)
 def dot_p(my_A,my_B,comm=MPI.COMM_WORLD):
+    print "MY_A,MY_B:"
+    print my_A
+    print my_B
     NORTH = 0
     SOUTH = 1
     EAST = 2
