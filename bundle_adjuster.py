@@ -230,8 +230,8 @@ class BundleAdjuster(object):
                     self.HCCs[i]    += dots(Jc.T, Jc)
                     self.HPPs[j]    += dots(Jp.T, Jp)
                     self.HCPs[i,j]   = dots(Jc.T, Jp)
-                    self.bCs[i]     += dots_p(Jc.T, r)
-                    self.bPs[j]     += dots(Jp.T, r)
+                    self.bCs[i]     += dots_pp(Jc.T, r)
+                    self.bPs[j]     += dots_pp(Jp.T, r)
 
     # Apply levenberg-marquardt damping to the blocks along along the
     # Hessian diagonal.
