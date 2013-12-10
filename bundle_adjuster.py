@@ -2,7 +2,7 @@ from copy import copy,deepcopy
 from numpy import *
 from numpy.linalg import *
 import numpy as np
-
+from matrix_dotp import dots_p
 from algebra import *
 import optimize
 from bundle import Bundle
@@ -230,7 +230,7 @@ class BundleAdjuster(object):
                     self.HCCs[i]    += dots(Jc.T, Jc)
                     self.HPPs[j]    += dots(Jp.T, Jp)
                     self.HCPs[i,j]   = dots(Jc.T, Jp)
-                    self.bCs[i]     += dots(Jc.T, r)
+                    self.bCs[i]     += dots_p(Jc.T, r)
                     self.bPs[j]     += dots(Jp.T, r)
 
     # Apply levenberg-marquardt damping to the blocks along along the
