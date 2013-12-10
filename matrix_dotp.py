@@ -24,6 +24,7 @@ def pprint(string, comm=MPI.COMM_WORLD):
     if comm.rank == 0:
         print(string)
 def dots_p(*m):
+    print m
     return reduce(dot_p, m)
 def dot_p(my_A,my_B,comm=MPI.COMM_WORLD):
     NORTH = 0
@@ -72,21 +73,7 @@ def dot_p(my_A,my_B,comm=MPI.COMM_WORLD):
 if __name__ == "__main__":
     my_A = np.array([    0., -1500.,   271.])
     my_B = np.array([-5.0873  , -0.17702 ,  2.968417])
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    my_C = dots_p(my_A, my_B)
-    
+    my_C = dots_p(my_A, my_B)  
     pprint(my_C)
     """
     comm = MPI.COMM_WORLD
