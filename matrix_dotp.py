@@ -5,7 +5,7 @@ from __future__ import division
 import numpy as np 
 from mpi4py import MPI
 from time import time
-
+from pprint import pprint
 #=============================================================================#
 
 my_N = 3000
@@ -21,9 +21,7 @@ global comm
 comm = MPI.COMM_WORLD
 
 
-def pprint(string, comm=MPI.COMM_WORLD):
-    if comm.rank == 0:
-        print(string)
+
 def dots_p(*m):
     print m
     print len(m)
@@ -62,10 +60,10 @@ def dot_p(my_A,my_B):
     req = [None, None, None, None]
 
     t0 = time()
-    print "tile_A"
-    print tile_A
-    print "neigh[EAST]"
-    print neigh[EAST]
+    pprint("tile_A")
+    pprint(tile_A)
+    pprint("neigh[EAST]")
+    pprint(neigh[EAST])
     for r in xrange(mpi_rows):
         req[EAST]  = ccomm.Isend(tile_A , neigh[EAST])
         req[WEST]  = ccomm.Irecv(tile_A_, neigh[WEST])
