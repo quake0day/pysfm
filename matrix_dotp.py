@@ -69,7 +69,7 @@ if __name__ == "__main__":
         req[NORTH] = ccomm.Irecv(tile_B_, neigh[NORTH])
 
         #t0 = time()
-        my_C += np.dot(tile_A, tile_B)
+        my_C = np.dot(tile_A, tile_B)
         #t1 = time()
 
         req[0].Waitall(req)
