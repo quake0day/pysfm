@@ -37,8 +37,11 @@ import numpy as np
 from numpy.fft import fft2, ifft2
 from math import ceil, fabs
 from mpi4py import MPI
-from parutils import pprint
 
+def pprint(str="", end="\n", comm=MPI.COMM_WORLD):
+    """Print for MPI parallel programs: Only rank 0 prints *str*."""
+    if comm.rank == 0:
+        print str+end, 
 #=============================================================================
 # Main
 
