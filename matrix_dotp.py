@@ -23,8 +23,9 @@ WEST = 3
 def pprint(string, comm=MPI.COMM_WORLD):
     if comm.rank == 0:
         print(string)
-
-def dots_p(my_A,my_B,comm=MPI.COMM_WORLD):
+def dots_p(*m):
+    return reduce(dot_p, m)
+def dot_p(my_A,my_B,comm=MPI.COMM_WORLD):
     NORTH = 0
     SOUTH = 1
     EAST = 2
