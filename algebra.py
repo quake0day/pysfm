@@ -47,9 +47,21 @@ def dots(*m):
     #print "----"
     #print reduce(np.dot,m)
     #print "----"
+
     return reduce(np.dot, m)
     #return reduce(dots_p,m)
 
+def dots_pp(*m):
+    print "DOTS being called"
+    print m
+    #print "LEN"
+    #print len(m)
+    #print "----"
+    print reduce(np.dot,m)
+    #print "----"
+
+    return reduce(np.dot, m)
+    #return reduce(dots_p,m)
 # Compute the sum of squared elements
 def ssq(x):
     return np.dot(x,x)
