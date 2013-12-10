@@ -29,7 +29,7 @@ def dots_p(*m):
     if len(m) == 2:
         return dot_p(m[0],m[1])
     else:
-        return reduce(dot_p, m)
+        return reduce(np.dot, m)
 def dot_p(my_A,my_B,comm=MPI.COMM_WORLD):
     print "MY_A,MY_B:"
     print my_A
