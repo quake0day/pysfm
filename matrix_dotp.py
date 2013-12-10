@@ -49,10 +49,8 @@ if __name__ == "__main__":
     # Create matrices
     #my_A = np.random.normal(size=(my_N, my_M)).astype(np.float32)
     #my_B = np.random.normal(size=(my_N, my_M)).astype(np.float32)
-    my_A = np.array([[ 2.  ,  0.  , -0.5 ],[ 0.05,  3.  ,  0.1 ],[ 0.  ,  0.  ,  1.  ]])
-    my_B = np.array([[ 0.8622,  0.037 , -0.5052],
-       [-0.2555,  0.893 , -0.3706],
-       [ 0.4374,  0.4486,  0.7794]])
+    my_A = np.array([    0., -1500.,   271.])
+    my_B = np.array([-5.0873  , -0.17702 ,  2.968417])
     my_C = np.zeros_like(my_A)
 
     tile_A = my_A
