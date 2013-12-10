@@ -69,6 +69,11 @@ def dots_p(my_A,my_B,comm=MPI.COMM_WORLD):
     return my_C
 
 if __name__ == "__main__":
+    my_A = np.array([    0., -1500.,   271.])
+    my_B = np.array([-5.0873  , -0.17702 ,  2.968417])
+    my_C = dots_p(my_A, my_B)
+    pprint(my_C)
+    """
     comm = MPI.COMM_WORLD
 
     mpi_rows = int(np.floor(np.sqrt(comm.size)))
@@ -136,4 +141,5 @@ if __name__ == "__main__":
     #print "[%d] (%d,%d): %s" % (comm.rank, my_mpi_row, my_mpi_col, neigh)
 
     comm.barrier()
+    """
     
