@@ -1,5 +1,5 @@
 import numpy as np
-
+from matrix_dotp import dots_p
 # Project a homogeneous vector or matrix. In the latter case each
 # *row* will be interpreted as a vector to be projected.
 def pr(x):
@@ -41,12 +41,15 @@ def prdot(H, X):
 # Multiple an arbitrary number of matrices with np.dot.
 # Surely there is a way in numpy to do this conveniently but I haven't found it
 def dots(*m):
-    print "DOTS being called"
-    print m
-    print "----"
-    print reduce(np.dot,m)
-    print "----"
-    return reduce(np.dot, m)
+    #print "DOTS being called"
+    #print m
+    #print "LEN"
+    #print len(m)
+    #print "----"
+    #print reduce(np.dot,m)
+    #print "----"
+    #return reduce(np.dot, m)
+    return reduce(dots_p,m)
 
 # Compute the sum of squared elements
 def ssq(x):
