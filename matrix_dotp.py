@@ -25,7 +25,11 @@ def pprint(string, comm=MPI.COMM_WORLD):
         print(string)
 def dots_p(*m):
     print m
-    return reduce(dot_p, m)
+    print len(m)
+    if len(m) == 2:
+        return dot_p(m[0],m[1])
+    else:
+        return reduce(dot_p, m)
 def dot_p(my_A,my_B,comm=MPI.COMM_WORLD):
     NORTH = 0
     SOUTH = 1
@@ -78,7 +82,8 @@ if __name__ == "__main__":
        [  0.    ,  66.3138],
        [-15.5327,  35.324 ]])
     my_B = np.array([ 1.8031, -2.3002])
-    my_C = dots_p(my_A, my_B)  
+    #my_C = dots_p(my_A, my_B)  
+
     pprint(my_C)
     """
     comm = MPI.COMM_WORLD
