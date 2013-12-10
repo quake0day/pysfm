@@ -62,6 +62,10 @@ def dot_p(my_A,my_B):
     req = [None, None, None, None]
 
     t0 = time()
+    print "tile_A"
+    print tile_A
+    print "neigh[EAST]"
+    print neigh[EAST]
     for r in xrange(mpi_rows):
         req[EAST]  = ccomm.Isend(tile_A , neigh[EAST])
         req[WEST]  = ccomm.Irecv(tile_A_, neigh[WEST])
