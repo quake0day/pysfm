@@ -11,7 +11,7 @@ from bundle_adjuster import BundleAdjuster
 import draw_bundle
 from lie import SO3
 from matrix_dotp import dots_p
-
+from pprint import pprint
 ############################################################################
 def rotation_xy(th):
     return np.array([[ np.cos(th), -np.sin(th), 0 ],
