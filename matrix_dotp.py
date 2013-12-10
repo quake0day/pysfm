@@ -17,7 +17,8 @@ NORTH = 0
 SOUTH = 1
 EAST = 2
 WEST = 3
-
+global comm
+comm = MPI.COMM_WORLD
 
 
 def pprint(string, comm=MPI.COMM_WORLD):
@@ -30,7 +31,7 @@ def dots_p(*m):
         return dot_p(m[0],m[1])
     else:
         return reduce(np.dot, m)
-def dot_p(my_A,my_B,comm=MPI.COMM_WORLD):
+def dot_p(my_A,my_B):
     print "MY_A,MY_B:"
     print my_A
     print my_B
