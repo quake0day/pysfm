@@ -52,12 +52,12 @@ def dots(*m):
     #return reduce(dots_p,m)
 
 def dots_pp(*m):
-    print "DOTS being called"
-    print m
+    #print "DOTS being called"
+    #print m
     #print "LEN"
     #print len(m)
     #print "----"
-    print reduce(np.dot,m)
+    #print reduce(np.dot,m)
     #print "----"
 
     return reduce(np.dot, m)
