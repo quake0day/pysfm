@@ -219,7 +219,7 @@ class BundleAdjuster(object):
         self.HCPs.fill(0.)
         self.bCs.fill(0.)
         self.bPs.fill(0.)
-
+        z = 0
         # Compute various components
         for j,track_id in enumerate(self.track_ids):
             track = bundle.tracks[track_id]
@@ -232,6 +232,8 @@ class BundleAdjuster(object):
                     self.HCPs[i,j]   = dots(Jc.T, Jp)
                     self.bCs[i]     += dots(Jc.T, r)
                     self.bPs[j]     += dots(Jp.T, r)
+                    z = z+1
+        print z
 
     # Apply levenberg-marquardt damping to the blocks along along the
     # Hessian diagonal.
