@@ -242,6 +242,10 @@ class BundleAdjuster(object):
                     #b_gpu = cuda.mem_alloc(Jp_float.nbytes)
                     print Jc_float
                     print Jc
+                    print "===="
+                    print Jc_T_float
+                    print Jc.T
+                    print "===="
                     #cuda.memcpy_htod(a_gpu,Jc_float)
                     #cuda.memcpy_htod(b_gpu,Jp_float)
                     #a_gpu = gpuarray.to_gpu(Jc)
