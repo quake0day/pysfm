@@ -248,7 +248,7 @@ class BundleAdjuster(object):
                     print "===="
                     print dot_gpu
                     print "===="
-                    print dots(Jc.T,Jc)
+                    print np.dot(Jc.T,Jc)
                     print "**"*5
                     self.HCCs[i]    += dots(Jc.T, Jc)
                     self.HPPs[j]    += dots(Jp.T, Jp)
