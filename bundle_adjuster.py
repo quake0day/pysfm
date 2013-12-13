@@ -250,6 +250,10 @@ class BundleAdjuster(object):
                     #cuda.memcpy_htod(b_gpu,Jp_float)
                     a_gpu = gpuarray.to_gpu(Jc_float)
                     b_gpu = gpuarray.to_gpu(Jc_T_float)
+                    print a_gpu
+                    print "HHIH"
+                    print b_gpu
+                    print "HHIH"
                     dot_gpu = gpuarray.maximum(b_gpu,a_gpu)
                     print "===="
                     print dot_gpu
