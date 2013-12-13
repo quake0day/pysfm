@@ -9,6 +9,7 @@ from bundle import Bundle
 import pycuda.driver as cuda
 import pycuda.autoinit
 from pycuda.compiler import SourceModule
+from pycuda import gpuarray
 
 ############################################################################
 def select(L, mask):
