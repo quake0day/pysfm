@@ -236,6 +236,10 @@ class BundleAdjuster(object):
                     Jc_float = Jc.astype(np.float32)
                     Jp_float = Jp.astype(np.float32)
                     print Jc_float,Jp_float
+                    a_gpu = cuda.mem_alloc(Jc_float.nbytes)
+                    b_gpu = cuda.mem_alloc(Jp_float.nbytes)
+                    cuda.memcpy_htod(a_gpu,Jc_float)
+                    cuda.memcpy_htod(b_gpu,Jp_float)
                     self.HCCs[i]    += dots(Jc.T, Jc)
                     self.HPPs[j]    += dots(Jp.T, Jp)
                     self.HCPs[i,j]   = dots(Jc.T, Jp)
