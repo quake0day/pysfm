@@ -10,8 +10,7 @@ from algebra import *
 from bundle_adjuster import BundleAdjuster
 import draw_bundle
 from lie import SO3
-from matrix_dotp import dots_p
-from pprint import pprint
+import time
 ############################################################################
 def rotation_xy(th):
     return np.array([[ np.cos(th), -np.sin(th), 0 ],
@@ -26,8 +25,8 @@ def rotation_xz(th):
 
 ############################################################################
 def create_test_bundle(noise=.1):
-    NUM_CAMERAS        = 4
-    NUM_POINTS         = 12
+    NUM_CAMERAS        = 40
+    NUM_POINTS         = 122
     POINT_CLOUD_RADIUS = 5.
     MISSING_FRAC       = .1     # fraction of measurements that are missing
     OUTLIER_FRAC       = 0      # fraction of measurements that are outliers
@@ -284,15 +283,9 @@ if __name__ == '__main__':
 
     #test_optimize()
     #test_optimize2()
+    time1 = time.time()
     test_optimize_fast()
+    total = time.time() - time1
+    print "totaltime:"
+    print total
 
-    my_A = np.array([[  2.6321, -14.6372],
-       [  7.578 ,   2.8283],
-       [  3.7932,  -0.5524],
-       [ 44.2092,   1.1052],
-       [  0.    ,  66.3138],
-       [-15.5327,  35.324 ]])
-    my_B = np.array([ 1.8031, -2.3002])
-    my_C = dots_p(my_A, my_B)  
-
-    pprint(my_C)

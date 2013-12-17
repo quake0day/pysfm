@@ -1,4 +1,7 @@
 import numpy as np
+import pycuda.gpuarray as gpuarray
+import pycuda.autoinit
+import scikits.cuda.linalg as linalg
 # Project a homogeneous vector or matrix. In the latter case each
 # *row* will be interpreted as a vector to be projected.
 def pr(x):
@@ -52,15 +55,7 @@ def dots(*m):
     #return reduce(dots_p,m)
 
 def dots_pp(*m):
-    #print "DOTS being called"
-    #print m
-    #print "LEN"
-    #print len(m)
-    #print "----"
-    #print reduce(np.dot,m)
-    #print "----"
-
-    return reduce(np.dot, m)
+    return reduce(linalg.mdot, m)
     #return reduce(dots_p,m)
 # Compute the sum of squared elements
 def ssq(x):

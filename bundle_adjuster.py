@@ -10,6 +10,8 @@ import pycuda.driver as cuda
 import pycuda.autoinit
 from pycuda.compiler import SourceModule
 from pycuda import gpuarray
+from scikits.cuda import linalg
+import time
 
 ############################################################################
 def select(L, mask):
@@ -225,18 +227,24 @@ class BundleAdjuster(object):
         self.bPs.fill(0.)
 
         # Compute various components
+	linalg.init()
         for j,track_id in enumerate(self.track_ids):
             track = bundle.tracks[track_id]
             #print track
+		
             for i,camera_id in enumerate(self.camera_ids):
                 if track.has_measurement(camera_id):
                     r = bundle.residual(camera_id, track_id)
                     #print r
                     Jc, Jp = bundle.Jresidual(camera_id, track_id)
+		    #print camera_id,track_id
                     
                     Jc_float = Jc.astype(np.float32)
                     Jc_T_float = Jc.T.astype(np.float32)
                     Jp_float = Jp.astype(np.float32)
+                    Jp_T_float = Jp.T.astype(np.float32)
+		    #r_float = r.astype(np.float32)
+		    
                     #print Jc_float,Jp_float
                     #a_gpu = cuda.mem_alloc(Jc_float.nbytes)
                     #b_gpu = cuda.mem_alloc(Jp_float.nbytes)
@@ -248,20 +256,19 @@ class BundleAdjuster(object):
                     #print "===="
                     #cuda.memcpy_htod(a_gpu,Jc_float)
                     #cuda.memcpy_htod(b_gpu,Jp_float)
+		    
                     a_gpu = gpuarray.to_gpu(Jc_float)
                     b_gpu = gpuarray.to_gpu(Jc_T_float)
-                    print a_gpu
-                    print "HHIH"
-                    print b_gpu
-                    print "HHIH"
-                    dot_gpu = gpuarray.maximum(b_gpu,a_gpu)
-                    print "===="
-                    print dot_gpu
-                    print "===="
-                    print np.dot(Jc.T,Jc)
-                    print "**"*5
-                    self.HCCs[i]    += dots(Jc.T, Jc)
-                    self.HPPs[j]    += dots(Jp.T, Jp)
+                    c_gpu = gpuarray.to_gpu(Jp_float)
+                    d_gpu = gpuarray.to_gpu(Jp_T_float)
+                    #e_gpu = gpuarray.to_gpu(r_float)
+		    self.HCCs[i]  += linalg.mdot(b_gpu,a_gpu).get()
+		    self.HPPs[j]  += linalg.mdot(d_gpu,c_gpu).get()
+		    #self.HCPs[i,j]  = linalg.mdot(b_gpu,c_gpu).get()
+		    #self.bCs[i]   += linalg.mdot(b_gpu,e_gpu).get()
+		    #self.bPs[j]   += linalg.mdot(d_gpu,e_gpu).get()
+                    #self.HCCs[i]    += dots(Jc.T, Jc)
+                    #self.HPPs[j]    += dots(Jp.T, Jp)
                     self.HCPs[i,j]   = dots(Jc.T, Jp)
                     self.bCs[i]     += dots(Jc.T, r)
                     self.bPs[j]     += dots(Jp.T, r)
@@ -297,6 +304,7 @@ class BundleAdjuster(object):
         for pos,i in enumerate(self.optim_camera_indices):
             S[ pos, pos ] = self.HCCs[i]
             b[ pos ]      = self.bCs[i]
+	time1 = time.time()
 
         for k in range(len(self.track_ids)):
             # Here we iterate over all cameras, even though some
@@ -308,6 +316,9 @@ class BundleAdjuster(object):
                 b[ ipos ] -= dots(self.HCPs[i,k], self.HPP_invs[k], self.bPs[k])
                 for jpos,j in enumerate(self.optim_camera_indices):
                     S[ ipos,jpos ] -= dots(self.HCPs[i,k], self.HPP_invs[k], self.HCPs[j,k].T)
+	total = time.time()-time1
+	print 'TOTAL'
+	print total
 
         return S,b
 

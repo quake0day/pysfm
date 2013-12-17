@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from numpy import lialg as la
+from numpy import linalg as la
 from pycuda import driver, compiler, gpuarray, tools
+import time
+from scikits.cuda import linalg
 
 # -- initialize the device
 import pycuda.autoinit
@@ -33,7 +35,7 @@ __global__ void MatrixMulKernel(float *A, float *B, float *C)
 	const uint bBegin = %(BLOCK_SIZE)s * bx;
 
 	// Step size used to iterate through the sub-matrices of B
-	const uint bStep = %(BLOCK_SIZE)s * wB
+	const uint bStep = %(BLOCK_SIZE)s * wB;
 
 	// The element of the block sub-matrix that is computed by the thread
 	float Csub = 0;
@@ -74,67 +76,90 @@ __global__ void MatrixMulKernel(float *A, float *B, float *C)
 }
 """
 
-# define the squre matrix size
 MATRIX_SIZE = 4
-
-# define size of blocks and tiles sub-matrix
 TILE_SIZE = 2
 BLOCK_SIZE = TILE_SIZE
-
-# create two random square matrices
 a_cpu = np.random.randn(MATRIX_SIZE, MATRIX_SIZE).astype(np.float32)
 b_cpu = np.random.randn(MATRIX_SIZE, MATRIX_SIZE).astype(np.float32)
 
-# compute reference on the CPU to verfiy GPU computation
-c_cpu = np.dot(a_cpu,b_cpu)
-
-# transfer host memory to device memory
 a_gpu = gpuarray.to_gpu(a_cpu)
 b_gpu = gpuarray.to_gpu(b_cpu)
+def cpu_matrixdot(a_cpu,b_cpu,MATRIX_SIZE, TILE_SIZE, BLOCK_SIZE):
+	# define the squre matrix size
+	#MATRIX_SIZE = 4
 
-# create empty gpu array for the result ( C = A * B )
-c_gpu = gpuarray.empty((MATRIX_SIZE,MATRIX_SIZE), np.float32)
+	# define size of blocks and tiles sub-matrix
+	#TILE_SIZE = 2
+	#BLOCK_SIZE = TILE_SIZE
 
-# get the kernel code from the template
-# by specifying the constants MATRIX_SIZE and BLOCK_SIZE
-kernel_code = kernel_code_template % {
-	'MATRIX_SIZE' : MATRIX_SIZE,
-	'BLOCK_SIZE' : BLOCK_SIZE,
+	# create two random square matrices
+	#a_cpu = np.random.randn(MATRIX_SIZE, MATRIX_SIZE).astype(np.float32)
+	#b_cpu = np.random.randn(MATRIX_SIZE, MATRIX_SIZE).astype(np.float32)
 
-}
+	# compute reference on the CPU to verfiy GPU computation
+	#c_cpu = np.dot(a_cpu,b_cpu)
 
-# compile the kernel code
-mod  = compiler.SourceModule(kernel_code)
+	# transfer host memory to device memory
+	a_gpu = gpuarray.to_gpu(a_cpu)
+	b_gpu = gpuarray.to_gpu(b_cpu)
 
-# get the kernel function from the compiled module
-matrixmul  = mod.get_function("MatrixMulKernel")
+	# create empty gpu array for the result ( C = A * B )
+	c_gpu = gpuarray.empty((MATRIX_SIZE,MATRIX_SIZE), np.float32)
 
-# call the kernel on the card
-matrixmul(
-	# inputs
-	a_gpu, b_gpu,
-	# output 
-	c_gpu,
-	# grid of multiple blocks
-	grid = (MATRIX_SIZE // TILE_SIZE, MATRIX_SIZE // TILE_SIZE),
-	# block of multiple threads
-	block = (TILE_SIZE, TILE_SIZE, 1),)
+	# get the kernel code from the template
+	# by specifying the constants MATRIX_SIZE and BLOCK_SIZE
+	kernel_code = kernel_code_template % {
+		'MATRIX_SIZE' : MATRIX_SIZE,
+		'BLOCK_SIZE' : BLOCK_SIZE,
 
-# print the resutl
-print "-"*80
-print "Matrix A (GPU):"
-print a_gpu.get()
+	}
 
-print "-"*80
-print "Matrix B (GPU):"
-print b_gpu.get()
+	# compile the kernel code
+	mod  = compiler.SourceModule(kernel_code)
 
-print "-"*80
-print "Matrix C (GPU):"
-print c_gpu.get()
+	# get the kernel function from the compiled module
+	matrixmul  = mod.get_function("MatrixMulKernel")
 
-print "-"*80
-print "CPU-GPU difference:"
-print c_cpu - c_gpu.get()
-print "L2 norm:", la.norm(c_cpu - c_gpu.get())
-np.allclose(c_cpu,c_gpu.get())
+	# call the kernel on the card
+	matrixmul(
+		# inputs
+		a_gpu, b_gpu,
+		# output 
+		c_gpu,
+		# grid of multiple blocks
+		grid = (MATRIX_SIZE // TILE_SIZE, MATRIX_SIZE // TILE_SIZE),
+		# block of multiple threads
+		block = (TILE_SIZE, TILE_SIZE, 1),)
+
+	# print the resutl
+	#print "-"*80
+	#print "Matrix A (GPU):"
+	#print a_gpu.get()
+
+	#print "-"*80
+	#print "Matrix B (GPU):"
+	#print b_gpu.get()
+
+	#print "-"*80
+	#print "Matrix C (GPU):"
+	#print c_gpu.get()
+
+	#print "-"*80
+	#print "CPU-GPU difference:"
+	#print c_cpu - c_gpu.get()
+	#print "L2 norm:", la.norm(c_cpu - c_gpu.get())
+	#np.allclose(c_cpu,c_gpu.get())
+linalg.init()
+tic = time.time()
+for i in range(1000000):
+	linalg.dot(a_gpu,b_gpu)	
+	#cpu_matrixdot(a_cpu,b_cpu,MATRIX_SIZE,TILE_SIZE,BLOCK_SIZE)
+total = time.time() - tic
+print "GPU TOTAL"
+print total
+tic3 = time.time()
+for i in range(1000000):
+	np.dot(a_cpu,b_cpu)
+total = time.time() - tic3
+print "CPU TOTAL"
+print total
